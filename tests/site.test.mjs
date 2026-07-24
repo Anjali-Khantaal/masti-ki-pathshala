@@ -22,7 +22,9 @@ test("includes the requested classroom interactions", async () => {
   assert.match(source, /पहचानो तो जानें/);
   assert.match(source, /हमारी कक्षा के 16 सितारे/);
   assert.match(source, /const STAR_COUNT = 16/);
-  assert.match(source, /playApplause/);
+  assert.match(source, /playCelebrationMelody/);
+  assert.doesNotMatch(source, /playApplause|Math\.random\(\) \* 2 - 1/);
+  assert.match(source, /1046\.5/);
   assert.match(source, /celebrationPieces/);
   assert.match(source, /compressPhoto/);
   assert.match(source, /localStorage/);

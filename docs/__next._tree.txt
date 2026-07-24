@@ -1,3 +1,3 @@
 :HL["/masti-ki-pathshala/_next/static/css/d0a717c6f9113430.css","style"]
-:HL["/masti-ki-pathshala/_next/static/css/141694e5fad31f0a.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"Z4Qk-jR2s4WsvqV8q5hMq"}
+:HL["/masti-ki-pathshala/_next/static/css/f04473f27f0930cb.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"y6mq-umNumBapxMlHfcHS"}

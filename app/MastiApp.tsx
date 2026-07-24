@@ -63,7 +63,7 @@ function safeParse<T>(value: string | null, fallback: T): T {
   }
 }
 
-function playApplause() {
+function playCelebrationMelody() {
   const AudioContextConstructor =
     window.AudioContext ||
     (
@@ -75,54 +75,58 @@ function playApplause() {
   if (!AudioContextConstructor) return;
 
   const audioContext = new AudioContextConstructor();
-  const sampleRate = audioContext.sampleRate;
+  const masterGain = audioContext.createGain();
+  masterGain.gain.value = 0.72;
+  masterGain.connect(audioContext.destination);
 
-  [0, 0.1, 0.21, 0.33, 0.47, 0.63, 0.8, 1.02, 1.25].forEach(
-    (offset, clapIndex) => {
-      const duration = 0.08 + (clapIndex % 3) * 0.015;
-      const buffer = audioContext.createBuffer(
-        1,
-        Math.floor(sampleRate * duration),
-        sampleRate,
-      );
-      const channel = buffer.getChannelData(0);
+  const playTone = (
+    frequency: number,
+    offset: number,
+    duration: number,
+    volume: number,
+    type: OscillatorType = "sine",
+  ) => {
+    const startsAt = audioContext.currentTime + offset;
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
 
-      for (let index = 0; index < channel.length; index += 1) {
-        const fade = 1 - index / channel.length;
-        channel[index] = (Math.random() * 2 - 1) * fade * fade;
-      }
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, startsAt);
+    gain.gain.setValueAtTime(0.0001, startsAt);
+    gain.gain.exponentialRampToValueAtTime(volume, startsAt + 0.025);
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      startsAt + duration,
+    );
 
-      const source = audioContext.createBufferSource();
-      const filter = audioContext.createBiquadFilter();
-      const gain = audioContext.createGain();
+    oscillator.connect(gain);
+    gain.connect(masterGain);
+    oscillator.start(startsAt);
+    oscillator.stop(startsAt + duration + 0.03);
+  };
 
-      filter.type = "bandpass";
-      filter.frequency.value = 1250 + (clapIndex % 4) * 180;
-      filter.Q.value = 0.7;
-      gain.gain.setValueAtTime(
-        0.0001,
-        audioContext.currentTime + offset,
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        0.42,
-        audioContext.currentTime + offset + 0.008,
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + offset + duration,
-      );
+  [
+    { frequency: 523.25, offset: 0, duration: 0.34, volume: 0.12 },
+    { frequency: 659.25, offset: 0.14, duration: 0.36, volume: 0.12 },
+    { frequency: 783.99, offset: 0.28, duration: 0.4, volume: 0.13 },
+    { frequency: 1046.5, offset: 0.44, duration: 0.54, volume: 0.15 },
+  ].forEach(({ frequency, offset, duration, volume }) => {
+    playTone(frequency, offset, duration, volume, "triangle");
+  });
 
-      source.buffer = buffer;
-      source.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioContext.destination);
-      source.start(audioContext.currentTime + offset);
-    },
-  );
+  [
+    { frequency: 523.25, volume: 0.055 },
+    { frequency: 659.25, volume: 0.05 },
+    { frequency: 783.99, volume: 0.05 },
+    { frequency: 1046.5, volume: 0.065 },
+  ].forEach(({ frequency, volume }) => {
+    playTone(frequency, 0.78, 0.68, volume);
+  });
+  playTone(1318.51, 0.98, 0.38, 0.035);
 
   window.setTimeout(() => {
     void audioContext.close();
-  }, 2200);
+  }, 1800);
 }
 
 function compressPhoto(file: File): Promise<string> {
@@ -324,7 +328,7 @@ export default function MastiApp() {
 
     if (willComplete) {
       setCelebrating(true);
-      if (soundOn) playApplause();
+      if (soundOn) playCelebrationMelody();
     }
   };
 
