@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     locale: "hi_IN",
     images: [
       {
-        url: "https://anjali-khantaal.github.io/masti-ki-pathshala/og.png",
+        url: "https://anjali-khantaal.github.io/masti-ki-pathshala/og-balloon.png",
         width: 1536,
         height: 1024,
-        alt: "मस्ती की पाठशाला का टॉफ़ी गणित खेल",
+        alt: "मस्ती की पाठशाला का सहयोगी गुब्बारा गणित खेल",
       },
     ],
   },
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "मस्ती की पाठशाला",
     description: "टॉफ़ी, खेल और बातचीत के साथ गणित से दोस्ती।",
     images: [
-      "https://anjali-khantaal.github.io/masti-ki-pathshala/og.png",
+      "https://anjali-khantaal.github.io/masti-ki-pathshala/og-balloon.png",
     ],
   },
 };

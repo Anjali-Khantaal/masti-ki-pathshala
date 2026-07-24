@@ -10,10 +10,11 @@ import {
   useRef,
   useState,
 } from "react";
+import BalloonGame from "./BalloonGame";
 import ToffeeGame from "./ToffeeGame";
 
 type Theme = "light" | "dark";
-type PageName = "home" | "day-1" | "toffee-game";
+type PageName = "home" | "day-1" | "toffee-game" | "balloon-game";
 
 type TeacherProfile = {
   name: string;
@@ -31,6 +32,7 @@ const STAR_COUNT = 16;
 function pageFromHash(hash: string): PageName {
   if (hash === "#day-1") return "day-1";
   if (hash === "#toffee-game") return "toffee-game";
+  if (hash === "#balloon-game") return "balloon-game";
   return "home";
 }
 
@@ -288,7 +290,9 @@ export default function MastiApp() {
         ? "#day-1"
         : nextPage === "toffee-game"
           ? "#toffee-game"
-          : "#home";
+          : nextPage === "balloon-game"
+            ? "#balloon-game"
+            : "#home";
     if (window.location.hash !== nextHash) {
       window.history.pushState(null, "", nextHash);
     }
@@ -434,6 +438,14 @@ export default function MastiApp() {
             aria-current={page === "toffee-game" ? "page" : undefined}
           >
             <span aria-hidden="true">🍬</span> टॉफ़ी खेल
+          </button>
+          <button
+            type="button"
+            className={page === "balloon-game" ? "is-active" : ""}
+            onClick={() => navigate("balloon-game")}
+            aria-current={page === "balloon-game" ? "page" : undefined}
+          >
+            <span aria-hidden="true">🎈</span> गुब्बारा
           </button>
         </nav>
 
@@ -766,8 +778,10 @@ export default function MastiApp() {
               </div>
             </section>
           </section>
-        ) : (
+        ) : page === "toffee-game" ? (
           <ToffeeGame soundOn={soundOn} />
+        ) : (
+          <BalloonGame soundOn={soundOn} />
         )}
       </main>
 

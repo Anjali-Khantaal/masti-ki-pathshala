@@ -42,3 +42,18 @@ test("includes the interactive toffee baseline game", async () => {
   assert.match(game, /शिक्षक झलक/);
   assert.match(game, /औपचारिक परीक्षा/);
 });
+
+test("includes the cooperative balloon belonging game", async () => {
+  const game = await readFile(new URL("app/BalloonGame.tsx", root), "utf8");
+  const app = await readFile(new URL("app/MastiApp.tsx", root), "utf8");
+
+  assert.match(app, /#balloon-game/);
+  assert.match(app, /गुब्बारा/);
+  assert.match(game, /गुब्बारा बचाओ!/);
+  assert.match(game, /const prompts: ConnectionPrompt\[\]/);
+  assert.match(game, /कोई जवाब देना या खड़ा होना ज़रूरी नहीं/);
+  assert.match(game, /सुरक्षा वाल्व सवाल/);
+  assert.match(game, /टीम से मदद लें/);
+  assert.match(game, /गुब्बारा फूटा… टीम नहीं/);
+  assert.match(game, /कोई बात नहीं, फिर कोशिश/);
+});
