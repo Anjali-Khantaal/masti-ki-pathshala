@@ -10,9 +10,10 @@ import {
   useRef,
   useState,
 } from "react";
+import ToffeeGame from "./ToffeeGame";
 
 type Theme = "light" | "dark";
-type PageName = "home" | "day-1";
+type PageName = "home" | "day-1" | "toffee-game";
 
 type TeacherProfile = {
   name: string;
@@ -26,6 +27,12 @@ const PROGRESS_KEY = "masti-ki-pathshala-day-1-stars";
 const THEME_KEY = "masti-ki-pathshala-theme";
 const SOUND_KEY = "masti-ki-pathshala-sound";
 const STAR_COUNT = 16;
+
+function pageFromHash(hash: string): PageName {
+  if (hash === "#day-1") return "day-1";
+  if (hash === "#toffee-game") return "toffee-game";
+  return "home";
+}
 
 const emptyProfile: TeacherProfile = {
   name: "",
@@ -242,7 +249,7 @@ export default function MastiApp() {
         ? "dark"
         : "light");
     const storedSound = window.localStorage.getItem(SOUND_KEY);
-    const initialPage = window.location.hash === "#day-1" ? "day-1" : "home";
+    const initialPage = pageFromHash(window.location.hash);
 
     setProfile(storedProfile);
     setDraftProfile(storedProfile);
@@ -258,7 +265,7 @@ export default function MastiApp() {
     setReady(true);
 
     const handleHashChange = () => {
-      setPage(window.location.hash === "#day-1" ? "day-1" : "home");
+      setPage(pageFromHash(window.location.hash));
     };
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
@@ -276,7 +283,12 @@ export default function MastiApp() {
   }, [celebrating]);
 
   const navigate = (nextPage: PageName) => {
-    const nextHash = nextPage === "day-1" ? "#day-1" : "#home";
+    const nextHash =
+      nextPage === "day-1"
+        ? "#day-1"
+        : nextPage === "toffee-game"
+          ? "#toffee-game"
+          : "#home";
     if (window.location.hash !== nextHash) {
       window.history.pushState(null, "", nextHash);
     }
@@ -415,6 +427,14 @@ export default function MastiApp() {
           >
             <span aria-hidden="true">🚀</span> दिन 1
           </button>
+          <button
+            type="button"
+            className={page === "toffee-game" ? "is-active" : ""}
+            onClick={() => navigate("toffee-game")}
+            aria-current={page === "toffee-game" ? "page" : undefined}
+          >
+            <span aria-hidden="true">🍬</span> टॉफ़ी खेल
+          </button>
         </nav>
 
         <div className="header-tools">
@@ -545,7 +565,7 @@ export default function MastiApp() {
               </article>
             </div>
           </section>
-        ) : (
+        ) : page === "day-1" ? (
           <section className="day-page" aria-labelledby="day-title">
             <div className="day-heading">
               <div>
@@ -746,6 +766,8 @@ export default function MastiApp() {
               </div>
             </section>
           </section>
+        ) : (
+          <ToffeeGame soundOn={soundOn} />
         )}
       </main>
 

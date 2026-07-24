@@ -8,6 +8,9 @@ import "@fontsource/hind/600.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    "https://anjali-khantaal.github.io/masti-ki-pathshala/",
+  ),
   title: "मस्ती की पाठशाला | GSSS Mariwara",
   description:
     "कक्षा 7 के लिए खेल, बातचीत और गणित से भरी एक रंगीन ऑनलाइन पाठशाला।",
@@ -17,6 +20,22 @@ export const metadata: Metadata = {
     description: "जहाँ गणित मिलता है खेल, हँसी और जिज्ञासा से।",
     type: "website",
     locale: "hi_IN",
+    images: [
+      {
+        url: "https://anjali-khantaal.github.io/masti-ki-pathshala/og.png",
+        width: 1536,
+        height: 1024,
+        alt: "मस्ती की पाठशाला का टॉफ़ी गणित खेल",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "मस्ती की पाठशाला",
+    description: "टॉफ़ी, खेल और बातचीत के साथ गणित से दोस्ती।",
+    images: [
+      "https://anjali-khantaal.github.io/masti-ki-pathshala/og.png",
+    ],
   },
 };
 
